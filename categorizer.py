@@ -13,9 +13,25 @@ class DownloadCategorizer():
         self.pdf = "C:/Users/PC/Desktop/DownloadedCategoryzer/pdf"
         self.sound = "C:/Users/PC/Desktop/DownloadedCategoryzer/sound"
         self.msi = "C:/Users/PC/Desktop/DownloadedCategoryzer/msi"
+        self.office = "C:/Users/PC/Desktop/DownloadedCategoryzer/office"
         self.uncategorized = "C:/Users/PC/Desktop/DownloadedCategoryzer/uncategorized"
 
+    def Setup(self):
+        Paths = [self.exe, self.img, self.zip, self.folder, self.vid, self.pdf, self.sound, self.msi, self.office, self.uncategorized]
+        checkRoot = os.path.exists("C:/Users/PC/Desktop/DownloadedCategoryzer")
+        if checkRoot == False:
+            os.mkdir("C:/Users/PC/Desktop/DownloadedCategoryzer")
+            for path in Paths:
+                os.mkdir(path)
+        else:
+            for path in Paths:
+                checkDir = os.path.exists(path)
+                if checkDir == False :
+                    os.mkdir(path)
+
+
     def Categorize(self):
+        self.Setup()
         file_list = [file for file in os.listdir(self.target) if file != 'desktop.ini']
         # making sure to not move desktop.ini file (i dont know what it is but it is important)
         for file in file_list:
@@ -40,7 +56,7 @@ class DownloadCategorizer():
                 destination = self.exe +"/"+ file
             elif category == "zip":
                 destination = self.zip+"/"+file
-            elif category == "png" or category == "jpg" or category == "webp":
+            elif category == "png" or category == "jpg" or category == "webp" or category == "jpeg":
                 destination = self.img+"/"+file
             elif category == "mp4" or category == "gif":
                 destination = self.vid+"/"+file
@@ -50,6 +66,8 @@ class DownloadCategorizer():
                 destination = self.sound+"/"+file
             elif category == "msi":
                 destination = self.msi+"/"+file
+            elif category == "docx" or category == "xlsx" or category == "pptx":
+                destination = self.office+"/"+file
 
             else:
                 destination = self.uncategorized+"/"+file
